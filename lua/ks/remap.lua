@@ -1,5 +1,3 @@
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
-
 -- Ctrl + arrows to move through windows
 vim.keymap.set("n", "<C-Left>", "<C-w>h")
 vim.keymap.set("n", "<C-Right>", "<C-w>l")
