@@ -11,12 +11,20 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
 	['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
 	['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
 	['<C-y>'] = cmp.mapping.confirm({select = true}),
-	['<C-Space>'] = cmp.mapping.complete(),
+	['<C-Space>'] = cmp.mapping(function()
+                        if cmp.visible() then
+                            cmp.close()
+                        else
+                            cmp.complete()
+                        end
+                    end),
+    ['<Esc>'] = cmp.mapping(function()
+                    if cmp.visible() then
+                        cmp.close()
+                    end
+                end)
 })
 
-lsp.set_preferences({
-	sign_icons = { }
-})
 
 lsp.setup_nvim_cmp({
 	mapping = cmp_mappings
@@ -39,11 +47,16 @@ lsp.setup()
 require("lspconfig").robotframework_ls.setup({
 	root_dir = function()
 		return lsp.dir.find_first({'requirements.txt'})
-	end
+	end,
+    settings = {
+        robot = {
+            python = {
+                executable = '${workspaceFolder}/venv/bin/python3'
+            },
+            language_server = {
+                python = '${workspaceFolder}/venv/bin/python3'
+            },
+            pythonpath = {'${workspaceFolder}/venv/bin/python3'}
+        }
+    }
 })
---	settings = {
---		robot = {
---			pythonpath = "./venv/bin/python3"
---		}
---	}
---})
